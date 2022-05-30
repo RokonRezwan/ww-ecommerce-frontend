@@ -35,13 +35,18 @@
                 
                  <div class="align-items-center align-content-center col-md-3 border-left mt-1">
                      <div style="font-size: 15px">
-                         @foreach ($product['prices'] as $price)
-                         <div class="mr-1">{{ $price['price_types']['name'] }} : ৳{{ $price['amount'] }}</div>
-                         @endforeach
+                        @foreach ($product['prices'] as $price)
+                            @if ($price['start_date'] <= \Carbon\Carbon::now() && $price['end_date'] >= \Carbon\Carbon::now())
+                                <div class="mr-1">{{ $price['price_types']['name'] }} : ৳ {{ $price['amount'] }}</div>
+                                @break
+                            @elseif ($price['price_type_id'] == 1)
+                                <div class="mr-1">{{ $price['price_types']['name'] }} : ৳{{ $price['amount'] }}</div>
+                            @endif
+                        @endforeach
                      </div>
                      <div class="d-flex flex-column mt-4">
                          <a href="{{ route('details', $product['id']) }}" class="btn btn-primary btn-sm" style="color: white" >Details</a>
-                         <button class="btn btn-outline-primary btn-sm mt-2" type="button">Add to Cart</button>
+                         <a href="{{ route('add.to.cart', $product['id']) }}" class="btn btn-outline-primary btn-sm mt-2" type="button">Add to Cart</a>
                      </div>
                  </div>
                 </div>
