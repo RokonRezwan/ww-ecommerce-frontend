@@ -27,7 +27,7 @@
                     </td>
                     <td data-th="Price">${{ $details['price'] }}</td>
                     <td data-th="Quantity">
-                        <input type="number" value="{{ $details['quantity'] }}" class="form-control quantity update-cart" />
+                        {{ $details['quantity'] }}
                     </td>
                     <td data-th="Subtotal" class="text-center">${{ $details['price'] * $details['quantity'] }}</td>
                     <td class="actions" data-th="">
@@ -43,55 +43,10 @@
         </tr>
         <tr>
             <td colspan="5" class="text-right">
-                <a href="{{ url('/') }}" class="btn btn-warning"><i class="fa fa-angle-left"></i> Continue Shopping</a>
-                <a href="{{ route('checkout') }}" class="btn btn-success">Checkout</a>
+                <a href="{{ route('cart') }}" class="btn btn-warning"><i class="fa fa-angle-left"></i> Back to Cart</a>
+                <a href="" class="btn btn-success">Confirm Order</a>
             </td>
         </tr>
     </tfoot>
 </table>
-@endsection
-  
-@section('scripts')
-<script type="text/javascript">
-  
-    $(".update-cart").change(function (e) {
-        e.preventDefault();
-  
-        var ele = $(this);
-  
-        $.ajax({
-            url: '{{ route('update.cart') }}',
-            method: "patch",
-            data: {
-                _token: '{{ csrf_token() }}', 
-                id: ele.parents("tr").attr("data-id"), 
-                quantity: ele.parents("tr").find(".quantity").val()
-            },
-            success: function (response) {
-               window.location.reload();
-            }
-        });
-    });
-  
-    $(".remove-from-cart").click(function (e) {
-        e.preventDefault();
-  
-        var ele = $(this);
-  
-        if(confirm("Are you sure want to remove?")) {
-            $.ajax({
-                url: '{{ route('remove.from.cart') }}',
-                method: "DELETE",
-                data: {
-                    _token: '{{ csrf_token() }}', 
-                    id: ele.parents("tr").attr("data-id")
-                },
-                success: function (response) {
-                    window.location.reload();
-                }
-            });
-        }
-    });
-  
-</script>
 @endsection
