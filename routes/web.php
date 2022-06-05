@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 
 Auth::routes();
@@ -26,3 +27,9 @@ Route::patch('update-cart', [ProductController::class, 'update'])->name('update.
 Route::delete('remove-from-cart', [ProductController::class, 'remove'])->name('remove.from.cart');
 
 Route::get('confirm-order', [ProductController::class, 'checkout'])->name('checkout');
+
+Route::get('store-order', [OrderController::class, 'storeOrder'])->name('storeOrder');
+
+Auth::routes();
+Route::get('/login2', [ApiLoginController::class, 'login'])->name('login2');
+Route::post('/api-login', [ApiLoginController::class, 'loginData'])->name('loginData');

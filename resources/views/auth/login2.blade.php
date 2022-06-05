@@ -111,7 +111,7 @@
                 else{
                     localStorage.setItem("authToken", JSON.stringify(response.data.token));
                     localStorage.setItem("userData", JSON.stringify(response.data.user));
-                    history.back();
+                    window.location.href="/";
                 }
             }).catch((error) => {
                 console.log('error axios request', error.data);
@@ -119,7 +119,7 @@
         }
     }
     }).mount('#onSubmitLoginForm');
-
+    
     if(localStorage.getItem('authToken') !== null)
     {
         document.getElementById("onSubmitLoginForm").style.display = "none";

@@ -77,4 +77,5 @@ class ProductController extends Controller
     {
         return view('confirm-order');
     }
+
 }
