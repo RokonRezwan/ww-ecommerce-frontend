@@ -9,11 +9,6 @@ use Illuminate\Support\Facades\Http;
 
 class ProductController extends Controller
 {
-    public function index()
-    {
-        //
-    }
-
     public function cart()
     {
         return view('cart');
