@@ -5,6 +5,12 @@
     <div class="d-flex justify-content-center row">
         <div class="col-md-8">
 
+            @if ($success = session('orderSuccess'))
+                <div class="alert alert-success">
+                    <strong>{{ $success['status'] }}</strong>
+                </div>
+            @endif
+
             @foreach ($products as $product)
                 <div class="row p-2 bg-white border rounded py-2">
                  <div class="col-md-3 mt-1">

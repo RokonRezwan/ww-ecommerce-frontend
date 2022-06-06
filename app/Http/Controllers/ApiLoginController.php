@@ -38,7 +38,9 @@ class ApiLoginController extends Controller
 
             return redirect()->route('home');
 
-        } catch (\Exception $exception) {
+            } 
+            
+        catch (\Exception $exception) {
             return redirect()->route('apiLogin')->with('errorMsg', 'User Not Found or Something Wrong with Error: '.$exception->getMessage());
         }
     }

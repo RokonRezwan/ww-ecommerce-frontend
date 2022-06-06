@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ApiLoginController;
 
 Auth::routes();
 
@@ -28,7 +29,7 @@ Route::delete('remove-from-cart', [ProductController::class, 'remove'])->name('r
 
 Route::get('confirm-order', [ProductController::class, 'checkout'])->name('checkout');
 
-Route::get('store-order', [OrderController::class, 'storeOrder'])->name('storeOrder');
+Route::post('store-order', [OrderController::class, 'storeOrder'])->name('storeOrder');
 
 Auth::routes();
 Route::get('/login2', [ApiLoginController::class, 'login'])->name('login2');

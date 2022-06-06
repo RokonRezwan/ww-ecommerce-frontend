@@ -61,6 +61,7 @@
             <h2>Order Summary</h2>
         </div>
         <div class="card-body">
+            {{ $message['message'] ?? 'No' }}
             @if(session('success'))
             <div class="row g-0 mb-2">
                 <div id="success" class="col-12 text-center text-success" style="font-size: 18px">{{ session('success')
@@ -68,7 +69,9 @@
             </div>
             @endif
 
-            <form action="{{ route('storeOrder') }}">
+            <form method="post" action="{{ route('storeOrder') }}">
+                @csrf
+                @method('POST')
                 <div class="row">
                     <div class="table-responsive col-md-8">
                         <table class="table table-bordered align-middle text-center">
@@ -103,17 +106,17 @@
                                         @endif
                                     </td>
                                     <td>
-                                        <input type="text" class="noBorderInput" name="productName" value="{{ $details['name'] }}" readonly>
+                                        <input type="hidden" class="noBorderInput" name="product_name[]" value="{{ $details['name'] }}" readonly>
                                     </td>
                                     <td>
-                                        <input type="text" class="noBorderInput" style="width: 100px;" name="productPrice" value="{{ $details['price'] }}" readonly>
+                                        <input type="text" class="noBorderInput" style="width: 100px;" name="prices[]" value="{{ $details['price'] }}" readonly>
                                     </td>
                                     <td data-th="Quantity">
-                                        <input type="number" min="1" name="productQuantity" value="{{ $details['quantity'] }}"
+                                        <input type="number" min="1" name="quantity[]" value="{{ $details['quantity'] }}"
                                             class="form-control quantity update-cart text-center" />
                                     </td>
                                     <td data-th="Subtotal" class="text-center">
-                                        <input type="text"   class="noBorderInput" style="width: 100px;" name="subTotal" value="{{ $details['price'] * $details['quantity'] }}" readonly>
+                                        <input type="text"   class="noBorderInput" style="width: 100px;" name="subTotal[]" value="{{ $details['price'] * $details['quantity'] }}" readonly>
                                     </td>
                                     <td class="actions" data-th="">
                                         <button class="btn btn-danger btn-sm remove-from-cart">
@@ -137,7 +140,7 @@
                                     </td>
                                     <td>
                                         <h5>
-                                            <input type="text" class="noBorderInput" style="width: 100px; font-weight: bold;" name="itemSubTotal" value="{{ $total }}" readonly>
+                                            <input type="text" class="noBorderInput" style="width: 100px; font-weight: bold;" name="item_sub_total" value="{{ $total }}" readonly>
                                         </h5>
                                     </td>
                                     <td></td>
@@ -148,14 +151,14 @@
                                         <strong>Shipping Fee</strong>
                                     </td>
                                     <td>
-                                        <input type="text" class="noBorderInput" style="width: 100px; font-weight: bold;" name="shippingFee" value="{{ $shippingFee }}" readonly>
+                                        <input type="text" class="noBorderInput" style="width: 100px; font-weight: bold;" name="shipping_fee" value="{{ $shippingFee }}" readonly>
                                     </td>
                                     <td></td>
                                 </tr>
                                 <tr>
                                     <td colspan="5" class="text-end"><strong>Tax</strong></td>
                                     <td>
-                                        <input type="text" class="noBorderInput" style="width: 100px; font-weight: bold;" name="tax" value="{{ $tax }}" readonly>
+                                        <input type="text" class="noBorderInput" style="width: 100px; font-weight: bold;" name="tax_amount" value="{{ $tax }}" readonly>
                                     </td>
                                     <td></td>
                                 </tr>
@@ -171,7 +174,7 @@
                                         Redeem Code: <strong style="color:red">#PROMOCODE</strong>
                                     </td>
                                     <td>
-                                        <input type="hidden" class="noBorderInput" style="width: 100px; font-weight: bold;" name="promo" value="{{ $promo }}" readonly>
+                                        <input type="hidden" class="noBorderInput" style="width: 100px; font-weight: bold;" name="promo_discount_amount" value="{{ $promo }}" readonly>
                                         <strong>-{{ $promo }}</strong>
                                     </td>
                                     <td></td>
@@ -185,7 +188,7 @@
                                     </td>
                                     <td>
                                         <h3>
-                                            <input type="text" class="noBorderInput" style="width: 100px; font-weight: bold;" name="grandTotal" value="{{ $grandTotal }}" readonly>
+                                            <input type="text" class="noBorderInput" style="width: 100px; font-weight: bold;" name="grand_total" value="{{ $grandTotal }}" readonly>
                                         </h3>
                                     </td>
                                     <td></td>
@@ -202,9 +205,9 @@
                                         <h5>Shipping Address</h5>
                                     </div>
                                     <div class="card-body">
-                                        <input type="username" name="shippingUserName" value="User Name" class="form-control mb-2">
-                                        <textarea name="shipping-address" id="shipping-address" rows="3"
-                                            class="form-control">371/A, Block: D, Bashundhara R/A, Baridhara, Dhaka - 1229
+                                        <input type="username" name="shippingUserName" value="" placeholder="Shipping User Name" class="form-control mb-2 border border-secondary" required autofocus>
+                                        <textarea name="shipping_address" id="shipping_address" rows="3"
+                                            class="form-control border border-secondary">
                                         </textarea>
                                     </div>
                                 </div>
@@ -213,9 +216,9 @@
                                         <h5>Billing Address</h5>
                                     </div>
                                     <div class="card-body">
-                                        <input type="username" name="billingUserName" value="Billing User Name" class="form-control mb-2">
-                                        <textarea name="billing-address" id="billing-address" rows="3"
-                                            class="form-control">371/A, Block: D, Bashundhara R/A, Baridhara, Dhaka - 1229
+                                        <input type="username" name="billingUserName" value="" class="form-control mb-2 border border-secondary" placeholder="Billing User Name" required>
+                                        <textarea name="billing_address" id="billing_address" rows="3"
+                                            class="form-control border border-secondary">
                                         </textarea>
                                     </div>
                                 </div>
@@ -225,21 +228,21 @@
                                     </div>
                                     <div class="card-body">
                                         <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="paymentMethod"
+                                            <input class="form-check-input" type="radio" name="payment_method"
                                                 id="paymentMethod1" value='1' checked>
                                             <label class="form-check-label" for="paymentMethod1">
                                                 Cash or Delivery
                                             </label>
                                         </div>
                                         <div class="form-check">
-                                            <input class="form-check-input" value='2' type="radio" name="paymentMethod"
+                                            <input class="form-check-input" value='2' type="radio" name="payment_method"
                                                 id="paymentMethod2">
                                             <label class="form-check-label" for="paymentMethod2">
                                                 Mobile Banking
                                             </label>
                                         </div>
                                         <div class="form-check">
-                                            <input class="form-check-input" value='3' type="radio" name="paymentMethod"
+                                            <input class="form-check-input" value='3' type="radio" name="payment_method"
                                                 id="paymentMethod3">
                                             <label class="form-check-label" for="paymentMethod3">
                                                 Card Payment

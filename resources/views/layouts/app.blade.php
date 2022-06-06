@@ -157,6 +157,10 @@
                     $('a#myName').text(userName.name);
                     console.log(localStorage.getItem('authToken')); 
             }
+
+            $(document).ready(function() {
+                $("div.alert").delay(5000).slideUp(300);
+            });
     </script>
 </body>
 </html>
